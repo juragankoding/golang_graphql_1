@@ -2,15 +2,8 @@
 
 package model
 
-type Barang struct {
-	ID          int    `json:"id"`
-	Nama        string `json:"nama"`
-	Description string `json:"description"`
-}
-
-type JenisBarang struct {
-	ID              int    `json:"id"`
-	NamaJenisBarang string `json:"namaJenisBarang"`
+type ResultInsert interface {
+	IsResultInsert()
 }
 
 type Karyawan struct {
@@ -20,3 +13,10 @@ type Karyawan struct {
 	Email      string `json:"email"`
 	NoHp       string `json:"noHp"`
 }
+
+type ResultJenisBarang struct {
+	Status string `json:"status"`
+	Code   int    `json:"code"`
+}
+
+func (ResultJenisBarang) IsResultInsert() {}

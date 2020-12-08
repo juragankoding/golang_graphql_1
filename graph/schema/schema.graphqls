@@ -13,8 +13,3 @@ type Karyawan {
   email: String!
   noHp: String!
 }
-
-type JenisBarang{
-  id: Int!
-  namaJenisBarang: String!
-}
