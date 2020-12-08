@@ -9,6 +9,7 @@ import (
 	"example_crud_graphql/graph/model"
 	"strconv"
 	"sync"
+	"sync/atomic"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
@@ -63,13 +64,13 @@ type ComplexityRoot struct {
 	Query struct {
 		GetBarang       func(childComplexity int) int
 		GetInfoKaryawan func(childComplexity int, id int) int
-		InsertBarang    func(childComplexity int) int
+		InsertBarang    func(childComplexity int, id int, nama string, description string) int
 	}
 }
 
 type QueryResolver interface {
 	GetBarang(ctx context.Context) (*string, error)
-	InsertBarang(ctx context.Context) (*string, error)
+	InsertBarang(ctx context.Context, id int, nama string, description string) (*model.Barang, error)
 	GetInfoKaryawan(ctx context.Context, id int) (*model.Karyawan, error)
 }
 
@@ -182,7 +183,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Query.InsertBarang(childComplexity), true
+		args, err := ec.field_Query_insertBarang_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.InsertBarang(childComplexity, args["id"].(int), args["nama"].(string), args["description"].(string)), true
 
 	}
 	return 0, false
@@ -242,7 +248,7 @@ var sources = []*ast.Source{
 
 type Query{
   getBarang: String
-  insertBarang: String
+  insertBarang(id: Int!, nama: String!, description: String!): Barang!
 }`, BuiltIn: false},
 	{Name: "graph/schema/schema.graphqls", Input: `# GraphQL schema example
 #
@@ -298,6 +304,39 @@ func (ec *executionContext) field_Query_getInfoKaryawan_args(ctx context.Context
 		}
 	}
 	args["id"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_insertBarang_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 int
+	if tmp, ok := rawArgs["id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+		arg0, err = ec.unmarshalNInt2int(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	var arg1 string
+	if tmp, ok := rawArgs["nama"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nama"))
+		arg1, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["nama"] = arg1
+	var arg2 string
+	if tmp, ok := rawArgs["description"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
+		arg2, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["description"] = arg2
 	return args, nil
 }
 
@@ -737,20 +776,30 @@ func (ec *executionContext) _Query_insertBarang(ctx context.Context, field graph
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_insertBarang_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().InsertBarang(rctx)
+		return ec.resolvers.Query().InsertBarang(rctx, args["id"].(int), args["nama"].(string), args["description"].(string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(*model.Barang)
 	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalNBarang2ᚖexample_crud_graphqlᚋgraphᚋmodelᚐBarang(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_getInfoKaryawan(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2109,6 +2158,9 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_insertBarang(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
 				return res
 			})
 		case "getInfoKaryawan":
@@ -2381,6 +2433,20 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 // endregion **************************** object.gotpl ****************************
 
 // region    ***************************** type.gotpl *****************************
+
+func (ec *executionContext) marshalNBarang2example_crud_graphqlᚋgraphᚋmodelᚐBarang(ctx context.Context, sel ast.SelectionSet, v model.Barang) graphql.Marshaler {
+	return ec._Barang(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNBarang2ᚖexample_crud_graphqlᚋgraphᚋmodelᚐBarang(ctx context.Context, sel ast.SelectionSet, v *model.Barang) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Barang(ctx, sel, v)
+}
 
 func (ec *executionContext) unmarshalNBoolean2bool(ctx context.Context, v interface{}) (bool, error) {
 	res, err := graphql.UnmarshalBoolean(v)

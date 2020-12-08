@@ -6,5 +6,5 @@ type Barang{
 
 type Query{
   getBarang: String
-  insertBarang: String
+  insertBarang(id: Int!, nama: String!, description: String!): Barang!
 }

@@ -6,15 +6,24 @@ package graph
 import (
 	"context"
 	"example_crud_graphql/graph/generated"
-	"fmt"
+	"example_crud_graphql/graph/model"
 )
 
 func (r *queryResolver) GetBarang(ctx context.Context) (*string, error) {
-	panic(fmt.Errorf("not implemented"))
+	keterangan := "belum di implementasikan"
+
+	return &keterangan, nil
 }
 
-func (r *queryResolver) InsertBarang(ctx context.Context) (*string, error) {
-	panic(fmt.Errorf("not implemented"))
+func (r *queryResolver) InsertBarang(ctx context.Context, id int, nama string, description string) (*model.Barang, error) {
+
+	barang := model.Barang{
+		ID:          id,
+		Nama:        nama,
+		Description: description,
+	}
+
+	return &barang, nil
 }
 
 // Query returns generated.QueryResolver implementation.
