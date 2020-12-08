@@ -2,19 +2,27 @@
 #
 # https://gqlgen.com/getting-started/
 
-extend type Query {
-  getInfoKaryawan(id: Int!): Karyawan
+type Todo {
+  id: ID!
+  text: String!
+  done: Boolean!
+  user: User!
 }
 
-type Karyawan {
-  id: Int!
-  idKaryawan: String!
-  nama: String!
-  email: String!
-  noHp: String!
+type User {
+  id: ID!
+  name: String!
 }
 
-type JenisBarang{
-  id: Int!
-  namaJenisBarang: String!
+type Query {
+  todos: [Todo!]!
+}
+
+input NewTodo {
+  text: String!
+  userId: String!
+}
+
+type Mutation {
+  createTodo(input: NewTodo!): Todo!
 }

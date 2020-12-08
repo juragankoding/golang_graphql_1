@@ -1,6 +1,6 @@
 # Where are all the schema files located? globs are supported eg  src/**/*.graphqls
 schema:
-  - graph/*.graphqls
+  - graph/schema/*.graphqls
 
 # Where should the generated server code go?
 exec:
@@ -43,8 +43,8 @@ autobind:
 # modelgen, the others will be allowed when binding to fields. Configure them to
 # your liking
 models:
-  Barang:
-    model: example_crud_graphql/models.Barang
+  # Barang:
+  #   model: example_crud_graphql/models.Barang
   ID:
     model:
       - github.com/99designs/gqlgen/graphql.ID

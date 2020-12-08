@@ -2,6 +2,12 @@
 
 package model
 
+type Barang struct {
+	ID          int    `json:"id"`
+	Nama        string `json:"nama"`
+	Description string `json:"description"`
+}
+
 type JenisBarang struct {
 	ID              int    `json:"id"`
 	NamaJenisBarang string `json:"namaJenisBarang"`

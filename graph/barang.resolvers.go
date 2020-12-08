@@ -13,6 +13,10 @@ func (r *queryResolver) GetBarang(ctx context.Context) (*string, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
+func (r *queryResolver) InsertBarang(ctx context.Context) (*string, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
 // Query returns generated.QueryResolver implementation.
 func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
