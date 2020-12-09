@@ -6,9 +6,13 @@ package resolvers
 import (
 	"context"
 	"example_crud_graphql/graph/model"
-	"fmt"
 )
 
 func (r *queryResolver) InsertJenisBarang(ctx context.Context, jenisBarang string) (*model.ResultJenisBarang, error) {
-	panic(fmt.Errorf("not implemented"))
+	resultJenisBarang := model.ResultJenisBarang{
+		Status: "",
+		Code:   404,
+	}
+
+	return &resultJenisBarang, nil
 }
