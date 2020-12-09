@@ -44,9 +44,9 @@ resolver:
 # your liking
 models:
   Barang:
-    model: example_crud_graphql/models.Barang
+    model: github.com/JuraganKoding/golang_graphql_1/models.Barang
   JenisBarang:
-    model: example_crud_graphql/models.JenisBarang
+    model: github.com/JuraganKoding/golang_graphql_1/models.JenisBarang
   ID:
     model:
       - github.com/99designs/gqlgen/graphql.ID

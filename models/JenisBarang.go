@@ -1,8 +1,9 @@
 package models
 
 import (
-	"example_crud_graphql/db"
 	"fmt"
+
+	"github.com/JuraganKoding/golang_graphql_1/db"
 )
 
 type JenisBarang struct {

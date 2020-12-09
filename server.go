@@ -1,11 +1,12 @@
 package main
 
 import (
-	"example_crud_graphql/graph"
-	"example_crud_graphql/graph/generated"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/JuraganKoding/golang_graphql_1/graph"
+	"github.com/JuraganKoding/golang_graphql_1/graph/generated"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
